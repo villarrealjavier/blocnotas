@@ -4,9 +4,9 @@ import java.time.LocalDateTime;
 
 public class NotaAlarma extends Notas implements Activable{
 	private LocalDateTime fechaAlarma;
-	private static final int MINUTOS_REPETIR_POR_DEFECTO=9;
+	private static final int MINUTOS_REPETIR_POR_DEFECTO=5;
 	private int minutosRepetir;
-	private boolean activado=false;
+	private boolean activado=true;
 	
 	
 	public NotaAlarma(String texto, LocalDateTime fechaAlarma, boolean activado) {

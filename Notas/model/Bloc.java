@@ -2,44 +2,94 @@ package Notas.model;
 
 
 import java.util.Objects;
-import java.util.Scanner;
 
-public class Bloc extends Notas{
+public class Bloc {
 	private static final int NUMERO_NOTAS_MAXIMA=100;
-	private int numNotas;
+	private int numNota;
 	private String nombre;
+	private Notas[] Notas = new Notas[NUMERO_NOTAS_MAXIMA];
+	
+	public Bloc() {
+		
+	}
 	
 	public Bloc(String nombre) {
 		this.nombre=nombre;
+		
 	}
+	
+	
 	
 	//methods
-	public void updateNota(int numNotas,String nombre) {
-		setNumNotas(numNotas);
-		setNombre(nombre);
+	public void addNota(Notas nota) {
+		if (numNota<NUMERO_NOTAS_MAXIMA) {
+			this.Notas[numNota]= nota;
+			numNota++;
+		}
+	}
+	public void addNota (int posicion, Notas nota) {
+		if (posicion<NUMERO_NOTAS_MAXIMA) {
+			this.Notas[numNota]=nota;
+		
+		}
+	}
+	
+	
+	public String getNota(int numNota) {
+		
+		return null;
+		}
+	
+	public void updateNota(int posicion,String texto) {
+		if (posicion<NUMERO_NOTAS_MAXIMA && this.Notas[posicion]!=null) {
+			this.Notas[posicion].setTexto(texto);
+		}else {
+			throw new NotaAlarmaException("No se ha podido actualizar");
+		}
+		
 		
 		
 	}
 	
-	public void activa(int numNotas) {
+	public void activa(int posicion) {
+		if (posicion < NUMERO_NOTAS_MAXIMA 
+				&& this.Notas[posicion-1] instanceof NotaAlarma 
+				&& this.Notas[posicion-1]!=null){
+				NotaAlarma notaActivar = (NotaAlarma)this.Notas[posicion-1];
+				notaActivar.activate();
+		}else {
+			throw new NotaAlarmaException("No se ha podido activar la alarma");
+		}
 		
 	}
-	public void desactiva (int numNotas) {
-		
+	public void desactiva (int posicion) {
+		if (posicion < NUMERO_NOTAS_MAXIMA 
+				&& this.Notas[posicion-1] instanceof NotaAlarma 
+				&& this.Notas[posicion-1]!=null){
+				NotaAlarma notaActivar = (NotaAlarma)this.Notas[posicion-1];
+				notaActivar.desactivar();
+		}else {
+			throw new NotaAlarmaException("No se ha podido desactivar la alarma");
+		}
 	}
+		
 	
+	public String ordenaBloc() {
+		return nombre;
+		
+	}
 	
 	
 	//getters and setters
 	public int getNumNotas() {
-		return numNotas;
+		return numNota;
 	}
 
 	public static int getNumeroNotasMaxima() {
 		return NUMERO_NOTAS_MAXIMA;
 	}
 	public void setNumNotas(int numNotas) {
-		this.numNotas = numNotas;
+		this.numNota = numNotas;
 	}
 
 	public String getNombre() {
@@ -52,7 +102,7 @@ public class Bloc extends Notas{
 	//HASHCODE
 	@Override
 	public int hashCode() {
-		return Objects.hash(nombre, numNotas);
+		return Objects.hash(nombre, numNota);
 	}
 	
 	//EQUALS
