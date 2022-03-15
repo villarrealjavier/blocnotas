@@ -1,13 +1,14 @@
 package Notas.model;
 
 
+import java.util.Arrays;
 import java.util.Objects;
 
 public class Bloc {
 	private static final int NUMERO_NOTAS_MAXIMA=100;
 	private int numNota;
 	private String nombre;
-	private Notas[] Notas = new Notas[NUMERO_NOTAS_MAXIMA];
+	private Notas[] notas = new Notas[NUMERO_NOTAS_MAXIMA];
 	
 	public Bloc() {
 		
@@ -23,29 +24,46 @@ public class Bloc {
 	//methods
 	public void addNota(Notas nota) {
 		if (numNota<NUMERO_NOTAS_MAXIMA) {
-			this.Notas[numNota]= nota;
+			this.notas[numNota]= nota;
 			numNota++;
 		}
 	}
 	public void addNota (int posicion, Notas nota) {
 		if (posicion<NUMERO_NOTAS_MAXIMA) {
-			this.Notas[numNota]=nota;
+			this.notas[numNota]=nota;
 		
 		}
 	}
 	
 	
-	public String getNota(int numNota) {
-		
-		return null;
-		}
 	
-	public void updateNota(int posicion,String texto) {
-		if (posicion<NUMERO_NOTAS_MAXIMA && this.Notas[posicion]!=null) {
-			this.Notas[posicion].setTexto(texto);
+	public String getNota(int numNota){
+		String resultado="";
+		if (numNota<NUMERO_NOTAS_MAXIMA && numNota>0) {
+			resultado=this.notas[numNota-1].toString();
+			
+		
 		}else {
-			throw new NotaAlarmaException("No se ha podido actualizar");
+			throw new BlocException("Se ha producido una Excepcion");
+			
+			
 		}
+		return resultado;
+		}
+		
+		
+	
+	@Override
+	public String toString() {
+		return "Bloc [numNota=" + numNota + ", nombre=" + nombre + ", Notas=" + Arrays.toString(notas) + "]";
+	}
+
+	public void updateNota(int posicion,String texto) {
+		if (posicion<NUMERO_NOTAS_MAXIMA && this.notas[posicion-1]!=null) {
+			this.notas[posicion-1].setTexto(texto);
+		}//else {
+			//throw new NotaAlarmaException("No se ha podido actualizar");
+		//}
 		
 		
 		
@@ -53,9 +71,9 @@ public class Bloc {
 	
 	public void activa(int posicion) {
 		if (posicion < NUMERO_NOTAS_MAXIMA 
-				&& this.Notas[posicion-1] instanceof NotaAlarma 
-				&& this.Notas[posicion-1]!=null){
-				NotaAlarma notaActivar = (NotaAlarma)this.Notas[posicion-1];
+				&& this.notas[posicion-1] instanceof NotaAlarma 
+				&& this.notas[posicion-1]!=null){
+				NotaAlarma notaActivar = (NotaAlarma)this.notas[posicion-1];
 				notaActivar.activate();
 		}else {
 			throw new NotaAlarmaException("No se ha podido activar la alarma");
@@ -64,9 +82,9 @@ public class Bloc {
 	}
 	public void desactiva (int posicion) {
 		if (posicion < NUMERO_NOTAS_MAXIMA 
-				&& this.Notas[posicion-1] instanceof NotaAlarma 
-				&& this.Notas[posicion-1]!=null){
-				NotaAlarma notaActivar = (NotaAlarma)this.Notas[posicion-1];
+				&& this.notas[posicion-1] instanceof NotaAlarma 
+				&& this.notas[posicion-1]!=null){
+				NotaAlarma notaActivar = (NotaAlarma)this.notas[posicion-1];
 				notaActivar.desactivar();
 		}else {
 			throw new NotaAlarmaException("No se ha podido desactivar la alarma");
@@ -74,8 +92,25 @@ public class Bloc {
 	}
 		
 	
-	public String ordenaBloc() {
-		return nombre;
+	public Notas[] ordenaBloc() {
+		int contadorNotas=0;
+		
+		//CON ESTE BUCLE CALCULAMOS LA LONGITUD QUE TENDRÁ EL ARRAY, DE MANERA
+		// QUE VEMOS EL NUMERO DE NOTAS NO NULA QUE TENDRÁ.
+		for (int i=0;i<notas.length;i++) {
+			if (notas[i]!=null) {
+				contadorNotas++;
+			}
+		}
+		Notas[] notasOrdenadas = new Notas[contadorNotas];
+		int contador=0;
+		for (int i=0;i<notas.length;i++) {
+			if (this.notas[i]!=null) {
+				notasOrdenadas[contador++]=this.notas[i];
+			}
+		}
+		Arrays.sort(notasOrdenadas);
+		return notasOrdenadas;
 		
 	}
 	

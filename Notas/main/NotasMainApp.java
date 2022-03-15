@@ -16,35 +16,69 @@ public class NotasMainApp {
 		
 	}while (!("SN".contains(respuesta) || "sn".contains(respuesta)) 
 			|| respuesta.lenght()!=1);*/
-	private static final String MENU_PRINCIPAL="Menú para crear notas (4 para Salir)"
+	private static final String MENU_PRINCIPAL="Menú para crear notas (4 para Salir)\n"
 			+ "1. Crear nota \n"
 			+ "2. Crear nota alarma \n"
 			+ "3. Modificar nota \n"
-			+ "4. Salir \n";
+			+ "4. Ordenar nota \n"
+			+ "5. Ordenar nota \n"
+			+ "6. Salir \n";
 	private static void imprimirMenuPrincipal() {
 		System.out.println(MENU_PRINCIPAL);
 	}
 	private static Scanner sc = new Scanner(System.in);
+	
+	
 	public static void main(String[] args) {
+		/*Bloc[] b1 = new Bloc[3];
+		
+		for (int i=0; i<b1.length;i++) {
+			crearNota();
+			
+			
+		}*/
+		
+		
 		
 		imprimirMenuPrincipal();
 		int opcion= Integer.valueOf(sc.nextLine());
 		Bloc bloc1 = new Bloc();
-		while (opcion!=4) {
+		boolean salir=false;
+		while (salir==false) {
 			
 			if (opcion==1) {
-				System.out.println("Introduzca el texto:");
-				String texto =sc.nextLine();
-				Notas n = new Notas(texto);
+				
+				Notas n = new Notas();
+				n = crearNota();
 				bloc1.addNota(n);
+				
+	
 			}else if (opcion==2) {
-				System.out.println("Introduzca el texto");
-				String texto=sc.nextLine();
-				LocalDateTime fecha = crearFecha();
-
-				NotaAlarma NA = new NotaAlarma(texto, fecha, true);
+				crearNotaAlarma();
+			}else if (opcion==3) {
+				System.out.println("Introduce el numero de nota que deseas modificar");
+				int numNotaModificar=Integer.valueOf(sc.nextLine());
+				System.out.println("Introduce el texto que deseas modificar");
+				String textoModificado=sc.nextLine();
+				bloc1.updateNota(numNotaModificar, textoModificado);
+			} else if (opcion==4) {
+				Notas[] notasOrdenadas = bloc1.ordenaBloc();
+				for (int i=0;i<notasOrdenadas.length;i++) {
+					System.out.println(notasOrdenadas[i]);
+				}
+				
+			} else if (opcion==5) {
+				System.out.println("Introduzca el numero");
+				int numNota=Integer.valueOf(sc.nextLine());
+				System.out.println(bloc1.getNota(numNota));
+				
+			}else if (opcion==6) {
+				salir=true;
 			}
+			imprimirMenuPrincipal();
+			opcion= Integer.valueOf(sc.nextLine());
 		}
+	}
 		
 	
 		
@@ -54,7 +88,7 @@ public class NotasMainApp {
 	
 	
 	
-		
+	/*	
 	//Notas n1 = new Notas(null);
 	Notas n4 = new Notas("Hola", 2);
 	Notas n5 = new Notas ("Hola", 2);
@@ -81,10 +115,15 @@ public class NotasMainApp {
 	//System.out.println(n1.isEmpty());
 	//System.out.println(n2.isEmpty());
 	//System.out.println(n3.isEmpty());
+	*/
 	
 	
-	}
-	private static LocalDateTime crearFecha() {
+	private static NotaAlarma crearNotaAlarma() {
+		System.out.println("Introduzca el texto");
+		String texto=sc.nextLine();
+		
+
+		
 		System.out.println("Introduzca el dia para programar su nota alarma");
 		int dia = Integer.valueOf(sc.nextLine());
 		System.out.println("Introduzca el mes para programar su nota alarma");
@@ -100,7 +139,8 @@ public class NotasMainApp {
 		int sec = Integer.valueOf(sc.nextLine());
 
 		LocalDateTime fecha = LocalDateTime.of(year, mes, dia, hour, min, sec);
-		return fecha;
+		NotaAlarma NA = new NotaAlarma(texto, fecha, true);
+		return NA;
 	}
 	
 	public static Notas crearNota() {

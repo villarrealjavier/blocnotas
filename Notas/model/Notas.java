@@ -3,8 +3,6 @@ package Notas.model;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
-import Enteros_Ordenar.Entero;
-
 public class Notas implements Comparable<Notas>{
 	private static Integer codigoSiguiente=0;
 	private Integer codigo;
@@ -19,6 +17,7 @@ public class Notas implements Comparable<Notas>{
 	public Notas(String texto) {
 		this.texto=texto;
 		this.codigo=codigoSiguiente;
+		this.fechaCreacion=LocalDateTime.now();
 		codigoSiguiente++;
 	}
 	public Notas (String texto, Integer codigo) {
@@ -110,15 +109,16 @@ public class Notas implements Comparable<Notas>{
 	@Override
 	public int compareTo(Notas otro) {
 		int resultado=0;
-		if (this.codigo>otro.getCodigo()) {
-			resultado=1;
-		}else if (this.codigo<otro.getCodigo()) {
-			resultado=-1;
-		}else if (this.codigo==otro.codigo) {
-			resultado=0;
+		if (otro!=null) {
+			if(this.fechaCreacion.isBefore(otro.getFechaCreacion())) {
+				resultado=1;
+			}else if (this.fechaCreacion.isAfter(otro.getFechaCreacion())) {
+				resultado= -1;
+			}
 		}
 		return resultado;
 	}
+	
 	//HASHCODE
 	@Override
 	public int hashCode() {
